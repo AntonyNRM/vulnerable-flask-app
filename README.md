@@ -48,7 +48,7 @@ cd vulnerable-flask-app
 
 pip install -r requirements.txt 
 ```
-✅ Requirements:
+Requirements:
 Python 3.x
 Flask
 boto3
@@ -59,12 +59,12 @@ boto3
 
 python app.py
 ```
-✅ The server will start at:
+The server will start at:
 ```bash
 
 http://127.0.0.1:5000/
 ```
-✅ Note: Debug mode is ON intentionally to make vulnerabilities easier to observe.
+Note: Debug mode is ON intentionally to make vulnerabilities easier to observe.
 
 # Step-by-Step Testing Instructions
 
@@ -72,7 +72,7 @@ http://127.0.0.1:5000/
 How to Test:
 Send a POST request to:
 
-```https
+```http
 
 http://127.0.0.1:5000/login
 ```
@@ -83,50 +83,50 @@ username	admin
 password	adminpass
 
 Observation:
-✅ Exposes all users' data including usernames and roles — without proper authorization.
+- Exposes all users' data including usernames and roles — without proper authorization.
 
 ## 2. /query (GET) — SQL Injection
 How to Test:
 Visit:
 
-```https
+```http
 
 http://127.0.0.1:5000/query?username=admin
 
 ```
 Injection Example:
 
-```https
+```http
 
 http://127.0.0.1:5000/query?username=admin' OR '1'='1
 ```
 Observation:n.
-✅ Retrieves all user records, bypassing authentication — demonstrating SQL Injection.
+- Retrieves all user records, bypassing authentication — demonstrating SQL Injection.
 
 ## 3. /ping (GET) — Command Injection
 How to Test:
 Simple ping:
 
-```https
+```http
 
 http://127.0.0.1:5000/ping?target=google.com
 ```
 
 Injection Example:
 
-```https
+```http
 
 http://127.0.0.1:5000/ping?target=127.0.0.1;ls
 ```
 
 Observation:
-✅ Executes arbitrary OS commands — leading to potential RCE.
+- Executes arbitrary OS commands — leading to potential RCE.
 
 ## 4. /upload (POST) — Cloud Misconfiguration
 How to Test:
 Send a POST request to:
 
-```https
+```http
 
 http://127.0.0.1:5000/upload
 ```

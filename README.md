@@ -103,7 +103,7 @@ Injection Example:
 
 http://127.0.0.1:5000/query?username=admin' OR '1'='1
 ```
-Observation:n.
+Observation:
 - Retrieves all user records, bypassing authentication — demonstrating SQL Injection.
 
 ## 3. /ping (GET) — Command Injection

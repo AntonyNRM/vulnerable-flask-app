@@ -32,7 +32,7 @@ Use strictly within controlled, local testing environments.
 
 ---
 
-## ⚙️ Setup Instructions
+## Setup Instructions
 
 ### 1. Clone the Repository
 

@@ -23,14 +23,15 @@ Endpoint	Vulnerability	Description
 /upload (POST)	Cloud Misconfiguration + Hardcoded API Keys	AWS credentials hardcoded; public "upload" simulation.
 ⚙️ Setup Instructions
 1. Clone the Repository
-'''bash
+
+```bash
 git clone https://github.com/AntonyNRM/vulnerable-flask-app.git
 cd vulnerable-flask-app
 
 3. Install Dependencies
 Install the required Python packages:
 
-'''bash
+```bash
 pip install -r requirements.txt
 
 ## Requirements:

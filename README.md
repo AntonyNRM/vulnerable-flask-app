@@ -24,17 +24,15 @@ Endpoint	Vulnerability	Description
 ⚙️ Setup Instructions
 1. Clone the Repository
 '''bash
-Copy
-Edit
 git clone https://github.com/AntonyNRM/vulnerable-flask-app.git
 cd vulnerable-flask-app
-2. Install Dependencies
+
+3. Install Dependencies
 Install the required Python packages:
 
 '''bash
-Copy
-Edit
 pip install -r requirements.txt
+
 ## Requirements:
 
 Python 3.x
@@ -47,8 +45,6 @@ boto3
 Start the Flask application with:
 
 '''bash
-Copy
-Edit
 python app.py
 The server will be available at:
 
@@ -68,9 +64,8 @@ Use Postman.
 Send a POST request to:
 
 '''bash
-Copy
-Edit
 http://127.0.0.1:5000/login
+
 With form fields:
 
 
@@ -86,16 +81,14 @@ How to Test:
 Open this URL in the browser:
 
 '''bash
-Copy
-Edit
 http://127.0.0.1:5000/query?username=admin
+
 Injection Example:
 Inject SQL manipulation by visiting:
 
 '''bash
-Copy
-Edit
 http://127.0.0.1:5000/query?username=admin' OR '1'='1
+
 Observation:
 ## SQL Injection succeeds:
 You retrieve all user records bypassing normal authentication checks.
@@ -105,16 +98,14 @@ How to Test:
 Send a simple ping request:
 
 '''bash
-Copy
-Edit
 http://127.0.0.1:5000/ping?target=google.com
+
 Injection Example:
 Inject an OS command using:
 
 '''bash
-Copy
-Edit
 http://127.0.0.1:5000/ping?target=127.0.0.1;ls
+
 Observation:
 ## You can inject commands like ls, cat, rm,
 leading to potential Remote Code Execution (RCE) on the server.
@@ -124,11 +115,9 @@ How to Test:
 Send a POST request (via Postman or HTML form) to:
 
 '''bash
-Copy
-Edit
 http://127.0.0.1:5000/upload
-Form fields:
 
+Form fields:
 
 Field	Value
 filename	sample.txt

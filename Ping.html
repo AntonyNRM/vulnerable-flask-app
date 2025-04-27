@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Command Injection Test</title>
+</head>
+<body>
+    <h2>Ping a Target (Command Injection Test)</h2>
+    <form method="GET" action="http://127.0.0.1:5000/ping">
+        <label for="target">Target Address:</label><br>
+        <input type="text" id="target" name="target" value="google.com"><br><br>
+        <input type="submit" value="Ping">
+    </form>
+</body>
+</html>

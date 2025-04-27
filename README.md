@@ -39,6 +39,9 @@ Clone the vulnerable Flask app repository to your local machine:
 ```bash
 
 git clone https://github.com/AntonyNRM/vulnerable-flask-app.git
+```
+```bash
+
 cd vulnerable-flask-app
 ```
 

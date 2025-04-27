@@ -23,7 +23,7 @@ Endpoint	Vulnerability	Description
 /upload (POST)	Cloud Misconfiguration + Hardcoded API Keys	AWS credentials hardcoded; public "upload" simulation.
 ⚙️ Setup Instructions
 1. Clone the Repository
-bash
+'''bash
 Copy
 Edit
 git clone https://github.com/AntonyNRM/vulnerable-flask-app.git
@@ -31,7 +31,7 @@ cd vulnerable-flask-app
 2. Install Dependencies
 Install the required Python packages:
 
-bash
+'''bash
 Copy
 Edit
 pip install -r requirements.txt
@@ -46,13 +46,13 @@ boto3
 ## Running the Application
 Start the Flask application with:
 
-bash
+'''bash
 Copy
 Edit
 python app.py
 The server will be available at:
 
-bash
+'''bash
 Copy
 Edit
 http://127.0.0.1:5000/
@@ -67,7 +67,7 @@ Use Postman.
 
 Send a POST request to:
 
-bash
+'''bash
 Copy
 Edit
 http://127.0.0.1:5000/login
@@ -85,14 +85,14 @@ without checking user authorization properly.
 How to Test:
 Open this URL in the browser:
 
-bash
+'''bash
 Copy
 Edit
 http://127.0.0.1:5000/query?username=admin
 Injection Example:
 Inject SQL manipulation by visiting:
 
-bash
+'''bash
 Copy
 Edit
 http://127.0.0.1:5000/query?username=admin' OR '1'='1
@@ -104,14 +104,14 @@ You retrieve all user records bypassing normal authentication checks.
 How to Test:
 Send a simple ping request:
 
-bash
+'''bash
 Copy
 Edit
 http://127.0.0.1:5000/ping?target=google.com
 Injection Example:
 Inject an OS command using:
 
-bash
+'''bash
 Copy
 Edit
 http://127.0.0.1:5000/ping?target=127.0.0.1;ls
@@ -123,7 +123,7 @@ leading to potential Remote Code Execution (RCE) on the server.
 How to Test:
 Send a POST request (via Postman or HTML form) to:
 
-bash
+'''bash
 Copy
 Edit
 http://127.0.0.1:5000/upload

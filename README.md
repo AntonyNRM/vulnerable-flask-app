@@ -72,7 +72,7 @@ http://127.0.0.1:5000/
 How to Test:
 Send a POST request to:
 
-```html
+```http
 
 http://127.0.0.1:5000/login
 ```
@@ -89,14 +89,14 @@ Observation:
 How to Test:
 Visit:
 
-```html
+```http
 
 http://127.0.0.1:5000/query?username=admin
 
 ```
 Injection Example:
 
-```html
+```http
 
 http://127.0.0.1:5000/query?username=admin' OR '1'='1
 ```
@@ -107,14 +107,14 @@ Observation:n.
 How to Test:
 Simple ping:
 
-```html
+```http
 
 http://127.0.0.1:5000/ping?target=google.com
 ```
 
 Injection Example:
 
-```html
+```http
 
 http://127.0.0.1:5000/ping?target=127.0.0.1;ls
 ```
@@ -126,7 +126,7 @@ Observation:
 How to Test:
 Send a POST request to:
 
-```html
+```http
 
 http://127.0.0.1:5000/upload
 ```

@@ -66,4 +66,75 @@ http://127.0.0.1:5000/
 ```
 ✅ Note: Debug mode is ON intentionally to make vulnerabilities easier to observe.
 
+# Step-by-Step Testing Instructions
 
+## 1. /login (POST) — Broken Access Control
+How to Test:
+Send a POST request to:
+
+```html
+
+http://127.0.0.1:5000/login
+```
+With form-data fields:
+
+Field	Value
+username	admin
+password	adminpass
+
+Observation:
+✅ Exposes all users' data including usernames and roles — without proper authorization.
+
+## 2. /query (GET) — SQL Injection
+How to Test:
+Visit:
+
+```html
+
+http://127.0.0.1:5000/query?username=admin
+
+```
+Injection Example:
+
+```html
+
+http://127.0.0.1:5000/query?username=admin' OR '1'='1
+```
+Observation:n.
+✅ Retrieves all user records, bypassing authentication — demonstrating SQL Injection.
+
+## 3. /ping (GET) — Command Injection
+How to Test:
+Simple ping:
+
+```html
+
+http://127.0.0.1:5000/ping?target=google.com
+```
+
+Injection Example:
+
+```html
+
+http://127.0.0.1:5000/ping?target=127.0.0.1;ls
+```
+
+Observation:
+✅ Executes arbitrary OS commands — leading to potential RCE.
+
+## 4. /upload (POST) — Cloud Misconfiguration
+How to Test:
+Send a POST request to:
+
+```html
+
+http://127.0.0.1:5000/upload
+```
+
+With form field:
+Field | Value
+filename | sample.txt
+
+Expected Observation:
+- Simulated upload with hardcoded AWS credentials.
+- Shows a cloud misconfiguration and hardcoded secret vulnerability.

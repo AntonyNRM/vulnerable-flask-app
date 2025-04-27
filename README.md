@@ -21,20 +21,24 @@ Endpoint	Vulnerability	Description
 /query (GET)	SQL Injection	Direct user input inside SQL queries.
 /ping (GET)	Command Injection	Executes OS commands based on unsanitized user input.
 /upload (POST)	Cloud Misconfiguration + Hardcoded API Keys	AWS credentials hardcoded; public "upload" simulation.
-⚙️ Setup Instructions
+
+🔥 Setup and Running Guide
 1. Clone the Repository
+Clone the vulnerable Flask app repository to your local machine:
 
-```bash
-git clone https://github.com/AntonyNRM/vulnerable-flask-app.git
+bash
+Copy
+Edit
+git clone https://github.com/yourusername/vulnerable-flask-app.git
 cd vulnerable-flask-app
+2. Install the Required Dependencies
+Install Python packages needed to run the app:
 
-3. Install Dependencies
-Install the required Python packages:
-
-```bash
+bash
+Copy
+Edit
 pip install -r requirements.txt
-
-## Requirements:
+✅ Requirements:
 
 Python 3.x
 
@@ -42,95 +46,98 @@ Flask
 
 boto3
 
-## Running the Application
-Start the Flask application with:
+3. Run the Application
+Start the Flask application:
 
-'''bash
+bash
+Copy
+Edit
 python app.py
-The server will be available at:
+The app will start running at:
 
-'''bash
+http
 Copy
 Edit
 http://127.0.0.1:5000/
-## Note: Debug mode is intentionally enabled to make vulnerabilities easier to observe.
+✅ Debug mode is ON intentionally to expose vulnerabilities.
 
-## Interacting with the Vulnerabilities
-1. /login (POST)
+🛠️ Step-by-Step Testing Instructions
+1. Login Endpoint (/login)
 How to Test:
-Create a simple HTML login form OR
 
-Use Postman.
+Open Postman or use a simple HTML form.
 
 Send a POST request to:
 
-'''bash
+http
+Copy
+Edit
 http://127.0.0.1:5000/login
-
-With form fields:
+With form data:
 
 
 Field	Value
 username	admin
 password	adminpass
-Observation:
-## If login is successful, the app exposes all user data including usernames and roles —
-without checking user authorization properly.
+Expected Observation:
 
-2. /query (GET)
+You should see a list of all users and their roles — without any access control.
+
+This shows Broken Access Control and Cryptographic Failures (plain text password matching).
+
+2. Query Endpoint (/query)
 How to Test:
-Open this URL in the browser:
 
-'''bash
+Open in browser:
+
+http
+Copy
+Edit
 http://127.0.0.1:5000/query?username=admin
+To test SQL Injection, open:
 
-Injection Example:
-Inject SQL manipulation by visiting:
-
-'''bash
+http
+Copy
+Edit
 http://127.0.0.1:5000/query?username=admin' OR '1'='1
+Expected Observation:
 
-Observation:
-## SQL Injection succeeds:
-You retrieve all user records bypassing normal authentication checks.
+Bypasses authentication and returns all user data.
 
-3. /ping (GET)
+Classic SQL Injection vulnerability.
+
+3. Ping Endpoint (/ping)
 How to Test:
-Send a simple ping request:
 
-'''bash
+Open browser:
+
+http
+Copy
+Edit
 http://127.0.0.1:5000/ping?target=google.com
+To test Command Injection:
 
-Injection Example:
-Inject an OS command using:
-
-'''bash
+http
+Copy
+Edit
 http://127.0.0.1:5000/ping?target=127.0.0.1;ls
+Expected Observation:
 
-Observation:
-## You can inject commands like ls, cat, rm,
-leading to potential Remote Code Execution (RCE) on the server.
+Server executes arbitrary OS commands.
 
-4. /upload (POST)
+Severe Command Injection vulnerability.
+
+4. Upload Endpoint (/upload)
 How to Test:
-Send a POST request (via Postman or HTML form) to:
 
-'''bash
+Send a POST request via Postman to:
+
+http
+Copy
+Edit
 http://127.0.0.1:5000/upload
+With form-data field:
 
-Form fields:
 
 Field	Value
 filename	sample.txt
-Observation:
-## Simulated upload occurs using hardcoded AWS credentials.
-In real-world, this could expose cloud data and compromise the cloud environment.
-
-## Learning Outcomes
-By exploring this application, you will learn:
-
-How critical vulnerabilities appear in typical development scenarios.
-
-Why role-based access control, input sanitization, and cryptographic practices are necessary.
-
-How cloud misconfigurations (e.g., hardcoded API keys) pose serious threats.

@@ -23,16 +23,19 @@ This application is intentionally insecure.
 
 ## Vulnerabilities Demonstrated
 
-| Endpoint | Vulnerability | Description |
-|:---------|:--------------|:------------|
-| `/login` (POST) | Broken Access Control & Cryptographic Failures | No role enforcement and plaintext password handling. |
-| `/query` (GET) | SQL Injection | Direct user input inside SQL queries without sanitisation. |
-| `/ping` (GET) | Command Injection | Executes OS commands based on unsanitized user input. |
-| `/upload` (POST) | Cloud Misconfiguration & Hardcoded API Keys | AWS credentials hardcoded; public "upload" simulation. |
+| # | Vulnerability | Endpoint |
+|---|---------------|----------|
+| 1 | Broken Access Control + Cryptographic Failure | `/login` |
+| 2 | SQL Injection | `/query` |
+| 3 | OS Command Injection | `/ping` |
+| 4 | Cloud Misconfiguration | `/upload` |
+| 5 | Insecure Deserialization (from last improvement) | `/deserialize` |
+| 6 | Simulated **Use-After-Free** (CVE-2025-29824) | `/allocate`, `/free`, `/use` |
 
 ---
+## Setup Instructions
 
-## 1. Clone the Repository
+### 1. Clone the Repository
 
 Clone the vulnerable Flask app repository to your local machine:
 
@@ -45,7 +48,7 @@ git clone https://github.com/AntonyNRM/vulnerable-flask-app.git
 cd vulnerable-flask-app
 ```
 
-## 2. Install the Required Dependencies
+### 2. Install the Required Dependencies
 
 ```bash
 
@@ -56,7 +59,7 @@ Python 3.x
 Flask
 boto3
 
-## 3. Run the Application
+### 3. Run the Application
 
 ```bash
 
@@ -67,30 +70,29 @@ The server will start at:
 
 http://127.0.0.1:5000/
 ```
-Note: Debug mode is ON intentionally to make vulnerabilities easier to observe.
 
-# Step-by-Step Testing Instructions
+## Step-by-Step Testing Instructions
 
-## 1. /login (POST) — Broken Access Control
-How to Test:
+### 1. /login (POST) — Broken Access Control
 Send a POST request to:
 
 ```http
 
 http://127.0.0.1:5000/login
 ```
-With form-data fields:
+Form Data:
 
 Field	Value
-username	admin
-password	adminpass
+| Field    | Value      |
+|----------|------------|
+| username | admin      |
+| password | admin123   |
 
 Observation:
 - Exposes all users' data including usernames and roles — without proper authorization.
 
 ## 2. /query (GET) — SQL Injection
-How to Test:
-Visit:
+Send request:
 
 ```http
 
@@ -106,9 +108,8 @@ http://127.0.0.1:5000/query?username=admin' OR '1'='1
 Observation:
 - Retrieves all user records, bypassing authentication — demonstrating SQL Injection.
 
-## 3. /ping (GET) — Command Injection
-How to Test:
-Simple ping:
+### 3. /ping (GET) — Command Injection
+Send request:
 
 ```http
 
@@ -123,23 +124,58 @@ http://127.0.0.1:5000/ping?target=127.0.0.1;ls
 ```
 
 Observation:
-- Executes arbitrary OS commands — leading to potential RCE.
+- Executes arbitrary OS commands — leading to potential Remote Code Execution (RCE).
 
-## 4. /upload (POST) — Cloud Misconfiguration
-How to Test:
-Send a POST request to:
+### 4. /upload (POST) — Cloud Misconfiguration
+Send POST request to:
 
 ```http
 
 http://127.0.0.1:5000/upload
 ```
+Form Data:
 
-With form field:
+| Field    | Value        |
+|----------|--------------|
+| filename | sample.txt   |
 
-Field | Value
-|:----|:------|
-filename | sample.txt
+Observation:
+- Simulated upload using hardcoded AWS credentials — showing cloud misconfiguration.
 
-Expected Observation:
-- Simulated upload with hardcoded AWS credentials.
-- Shows a cloud misconfiguration and hardcoded secret vulnerability.
+### 5. /deserialize - Insecure Deserialization
+Python script to test:
+
+```python
+
+# Save this script as test_deserialize.py
+import requests
+import pickle
+
+payload = pickle.dumps({"exploit": "deserialized!"})
+response = requests.post("http://127.0.0.1:5000/deserialize", data=payload)
+print(response.text)
+```
+Observation:
+- Untrusted data is deserialized without validation — leading to potential code execution.
+
+### 6. /allocate, /free, /use - Use-After-Free Simulation (CVE-2025-29824)
+Step 1: Allocate Object
+
+```bash
+
+curl -X POST -d "id=123" http://127.0.0.1:5000/allocate
+```
+Step 2: Free the Object
+
+```bash
+
+curl -X POST -d "id=123" http://127.0.0.1:5000/free
+```
+Step 3: Use the Freed Object (Triggers Error)
+
+```bash
+
+curl "http://127.0.0.1:5000/use?id=123"
+```
+Observation:
+- Attempts to access a freed object — simulating a Use-After-Free vulnerability.

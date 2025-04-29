@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Deserialize Test</title>
+</head>
+<body>
+    <h2>Deserialize Payload (Insecure Deserialization Test)</h2>
+    <form method="POST" action="http://127.0.0.1:5000/deserialize">
+        <label for="payload">Payload (Python dict):</label><br>
+        <textarea id="payload" name="payload" rows="10" cols="50">{"test": "value"}</textarea><br><br>
+        <input type="submit" value="Deserialize">
+    </form>
+    <p><strong>Note:</strong> This version supports plain Python-like objects (dicts) for testing <code>eval()</code>. Not for real pickle tests.</p>
+</body>
+</html>

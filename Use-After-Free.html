@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Use-After-Free Simulation</title>
+</head>
+<body>
+    <h2>Simulate Use-After-Free Vulnerability</h2>
+
+    <h3>Allocate Object</h3>
+    <form method="POST" action="http://127.0.0.1:5000/allocate">
+        <label for="alloc_id">Object ID:</label><br>
+        <input type="text" id="alloc_id" name="id" value="123"><br><br>
+        <input type="submit" value="Allocate">
+    </form>
+
+    <h3>Free Object</h3>
+    <form method="POST" action="http://127.0.0.1:5000/free">
+        <label for="free_id">Object ID:</label><br>
+        <input type="text" id="free_id" name="id" value="123"><br><br>
+        <input type="submit" value="Free">
+    </form>
+
+    <h3>Use Freed Object</h3>
+    <form method="GET" action="http://127.0.0.1:5000/use">
+        <label for="use_id">Object ID:</label><br>
+        <input type="text" id="use_id" name="id" value="123"><br><br>
+        <input type="submit" value="Use">
+    </form>
+
+</body>
+</html>

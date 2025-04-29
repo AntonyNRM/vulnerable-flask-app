@@ -55,8 +55,11 @@ cd vulnerable-flask-app
 pip install -r requirements.txt 
 ```
 Requirements:
+
 Python 3.x
+
 Flask
+
 boto3
 
 ### 3. Run the Application
